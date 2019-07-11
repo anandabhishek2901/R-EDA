@@ -1,10 +1,12 @@
 ##### Data Import in R from CSV #####
 ##### We will use the data for Premier league for the complete exercise ###
+library(magrittr)
+library(dplyr)
 
 foot16 <- read.csv("~/Documents/foot16.csv", comment.char="#", stringsAsFactors=FALSE)
 foot17 <- read.csv("~/Documents/foot17.csv", comment.char="#", stringsAsFactors=FALSE)
 
-library(magrittr)
+
 summary(foot16)
 summary(foot_17)
 foot_16<-foot16[!is.na(foot16$matchID),]
@@ -15,4 +17,13 @@ foot_16$PlayerRef<-as.character(foot_16$PlayerRef)
 foot_17$PlayerRef<-as.character(foot_17$PlayerRef)
 foot_16$name<-as.character(foot_16$name)
 foot_17$name<-as.character(foot_17$name)
+
+### understanding points distribution irrespective of players ##
+
+hist(foot_16$points,xlab = "Points",col = "yellow",border = "blue")
+hist(foot_17$points,xlab = "Points",col = "yellow",border = "blue")
+
+### understanding top performing player and their performance with time ####
+group_by(foot_16, name) %>% summarise(mean_points = mean(points, na.rm  = TRUE)) %>% arrange(desc(mean_points)) %>% top_n(n=10)
+
 
